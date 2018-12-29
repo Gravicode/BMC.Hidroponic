@@ -16,6 +16,7 @@ using Gadgeteer.SocketInterfaces;
 using Microsoft.SPOT.Hardware;
 using System.Text;
 using System.IO.Ports;
+using Gadgeteer.Modules.GHIElectronics;
 
 namespace BMC.Hidroponic.Device
 {
@@ -23,7 +24,7 @@ namespace BMC.Hidroponic.Device
     {
         static double WaterDist = 0;
         HC_SR04 DistanceSensor = new HC_SR04(ThisBoard.Socket1.Pin6, ThisBoard.Socket1.Pin7);
-        SimpleSerial UART = null;
+        //SimpleSerial UART = null;
         OutputPort relay1 = new OutputPort(ThisBoard.Socket9.Pin3, false);
         OutputPort relay2 = new OutputPort(ThisBoard.Socket9.Pin4, false);
         PhMeter phSensor = new PhMeter(ThisBoard.Socket14.AnalogInput5);
@@ -56,12 +57,37 @@ namespace BMC.Hidroponic.Device
             Thread thDist = new Thread(new ThreadStart(LoopDistance));
             thDist.Start();
 
-            StartLora();
-
+            xBeeAdapter.Configure(9600,SerialParity.None,SerialStopBits.One,8,HardwareFlowControl.NotRequired);
+            //StartLora();
+            xBeeAdapter.Port.LineReceived += Port_LineReceived;
             GT.Timer timer = new GT.Timer(5000); // every second (1000ms)
             timer.Tick += timer_Tick;
             timer.Start();
         }
+
+        void Port_LineReceived(GT.SocketInterfaces.Serial sender, string line)
+        {
+            Debug.Print(line);
+            string[] data = line.Split('|');
+            switch (data[0])
+            {
+                case
+                "Relay1":
+                    {
+                        var state = data[1].ToLower() == "true" ? true : false;
+                        relay1.Write(state);
+                    }
+                    break;
+                case "Relay2":
+                    {
+                        var state = data[1].ToLower() == "true" ? true : false;
+                        relay2.Write(state);
+                    }
+                    break;
+            }
+        }
+
+      
 
         void LoopDistance()
         {
@@ -100,6 +126,9 @@ namespace BMC.Hidroponic.Device
             };
             var jsonStr = Json.NETMF.JsonSerializer.SerializeObject(data);
             Debug.Print("kirim :" + jsonStr);
+            xBeeAdapter.Port.WriteLine(jsonStr);
+            /*
+            //USING LORA
             //PrintToLcd("send count: " + counter);
             sendData(jsonStr);
             Thread.Sleep(5000);
@@ -119,7 +148,7 @@ namespace BMC.Hidroponic.Device
             }
             var TimeStr = DateTime.Now.ToString("dd/MM/yy HH:mm");
             //insert to db
-
+            */
 
 
 
@@ -127,6 +156,8 @@ namespace BMC.Hidroponic.Device
 
 
         }
+        #region LORA
+        /*
         void StartLora()
         {
             UART = new SimpleSerial(ThisBoard.Socket4.SerialPortName, 57600);
@@ -367,6 +398,8 @@ namespace BMC.Hidroponic.Device
                 }
             }
         }
+         */
+        #endregion
         void LDR1_OnInterrupt(uint data1, uint data2, DateTime time)
         {
             TurnSolenoid(!relay2.Read());

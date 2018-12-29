@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BMC.Hidroponic.Device", "BMC.Hidroponic.Device\BMC.Hidroponic.Device.csproj", "{D61AB78D-1847-4549-B867-9001B0E7CA06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KerlinkUDPForwarder", "KerlinkUDPForwarder\KerlinkUDPForwarder.csproj", "{E7989A7B-F3A5-4F34-8103-EF3DD696D62F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BMC.Hidroponic.Gateway", "BMC.Hidroponic.Gateway\BMC.Hidroponic.Gateway.csproj", "{35341809-AD4B-4AD9-B805-AE24835F94CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,12 +19,15 @@ Global
 		{D61AB78D-1847-4549-B867-9001B0E7CA06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D61AB78D-1847-4549-B867-9001B0E7CA06}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D61AB78D-1847-4549-B867-9001B0E7CA06}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{E7989A7B-F3A5-4F34-8103-EF3DD696D62F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E7989A7B-F3A5-4F34-8103-EF3DD696D62F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E7989A7B-F3A5-4F34-8103-EF3DD696D62F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E7989A7B-F3A5-4F34-8103-EF3DD696D62F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35341809-AD4B-4AD9-B805-AE24835F94CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35341809-AD4B-4AD9-B805-AE24835F94CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35341809-AD4B-4AD9-B805-AE24835F94CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35341809-AD4B-4AD9-B805-AE24835F94CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3CB2B7BE-9A92-49C6-B31E-A98A6DCA3C2A}
 	EndGlobalSection
 EndGlobal
