@@ -130,7 +130,8 @@ namespace BMC.Hidroponic.Gateway
         }
         static void StartListener()
         {
-            xBee = new SerialPort("COM6", 9600);
+            var port = ConfigurationManager.AppSettings["XBeePort"];
+            xBee = new SerialPort(port, 9600);
             try
             {
                 if (xBee.IsOpen) xBee.Close();

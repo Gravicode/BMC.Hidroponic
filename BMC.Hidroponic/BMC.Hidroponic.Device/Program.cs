@@ -23,15 +23,15 @@ namespace BMC.Hidroponic.Device
     public partial class Program
     {
         static double WaterDist = 0;
-        HC_SR04 DistanceSensor = new HC_SR04(ThisBoard.Socket1.Pin6, ThisBoard.Socket1.Pin7);
+        HC_SR04 DistanceSensor = new HC_SR04(ThisBoard.Socket9.Pin5, ThisBoard.Socket9.Pin6);
         //SimpleSerial UART = null;
         OutputPort relay1 = new OutputPort(ThisBoard.Socket9.Pin3, false);
         OutputPort relay2 = new OutputPort(ThisBoard.Socket9.Pin4, false);
         PhMeter phSensor = new PhMeter(ThisBoard.Socket14.AnalogInput5);
         TdsMeter Tds1 = new TdsMeter(ThisBoard.Socket14.AnalogInput3);
-        DS18B20 Temp1 = new DS18B20(ThisBoard.Socket1.Pin4);
-        DS18B20 Temp2 = new DS18B20(ThisBoard.Socket1.Pin3);
-        DS18B20 Temp3 = new DS18B20(ThisBoard.Socket1.Pin5);
+        DS18B20GHI Temp1 = new DS18B20GHI(ThisBoard.Socket1.Pin4);
+        DS18B20GHI Temp2 = new DS18B20GHI(ThisBoard.Socket1.Pin3);
+        //DS18B20 Temp3 = new DS18B20(ThisBoard.Socket1.Pin5);
         TdsMeter Tds2 = new TdsMeter(ThisBoard.Socket14.AnalogInput4);
         // This method is run when the mainboard is powered up or reset.   
         void ProgramStarted()
@@ -118,9 +118,9 @@ namespace BMC.Hidroponic.Device
                 Relay2 = relay2.Read(),
                 Tds1 = Tds1.tdsValue,
                 Tds2 = Tds2.tdsValue,
-                Temp1 = Temp1.ConvertAndReadTemperature(),
-                Temp2 = Temp2.ConvertAndReadTemperature(),
-                Temp3 = Temp3.ConvertAndReadTemperature(),
+                Temp1 = Temp1.TempValue,//.ConvertAndReadTemperature(),
+                Temp2 = Temp2.TempValue,//.ConvertAndReadTemperature(),
+                //Temp3 = Temp3.ConvertAndReadTemperature(),
                 WaterDist = WaterDist
 
             };

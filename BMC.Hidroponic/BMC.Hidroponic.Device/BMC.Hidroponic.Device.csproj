@@ -39,6 +39,7 @@
   <!-- Everything below here is custom to .NET MF / Gadgeteer template-->
   <Import Project="$(NetMfTargetsBaseDir)$(TargetFrameworkVersion)\CSharp.Targets" />
   <ItemGroup>
+    <Compile Include="Devices\DS18B20GHI.cs" />
     <Compile Include="Devices\DS18B20.cs" />
     <Compile Include="Devices\HCSR04.cs" />
     <Compile Include="Devices\OneWireBus.cs" />
