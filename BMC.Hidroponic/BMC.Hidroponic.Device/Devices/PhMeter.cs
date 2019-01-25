@@ -16,13 +16,20 @@ namespace BMC.Hidroponic.Device
         AnalogInput phSensor;
         public PhMeter(Cpu.AnalogChannel AnalogPin)
         {
-            phSensor = new AnalogInput(AnalogPin);
-          
-            buf = new double[10];
-           
-            PhValue = 0;
-            th1 = new Thread(new ThreadStart(Loop));
-            th1.Start();
+            try
+            {
+                phSensor = new AnalogInput(AnalogPin);
+
+                buf = new double[10];
+
+                PhValue = 0;
+                th1 = new Thread(new ThreadStart(Loop));
+                th1.Start();
+            }
+            catch (Exception ex)
+            {
+                Debug.Print("Ph Sensor Error"+ex.Message);
+            }
         }
         public double PhValue { get; set; }
         void Loop()
@@ -33,7 +40,7 @@ namespace BMC.Hidroponic.Device
                 {
                     buf[i] = phSensor.ReadRaw();
                   
-                    Thread.Sleep(10);
+                    Thread.Sleep(100);
                 }
                 for (int i = 0; i < 9; i++)        //sort the analog from small to large
                 {
@@ -56,7 +63,7 @@ namespace BMC.Hidroponic.Device
                 //Serial.print(phValue, 2);
                 //Serial.println(" ");
                 //digitalWrite(13, HIGH);
-                Thread.Sleep(800);
+                Thread.Sleep(2000);
                 //digitalWrite(13, LOW); 
             }
         }

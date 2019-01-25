@@ -41,7 +41,8 @@ namespace BMC.Hidroponic.Gateway
         {
             var url = ConfigurationManager.AppSettings["PowerBiUrl"];
             //SensorData2 data2 = new SensorData2() { Ph = data.Ph, Tds1 = data.Tds1, Tds2 = data.Tds2, Temp1 = data.Temp1, Temp2 = data.Temp2, Temp3 = data.Temp3, WaterDist = data.WaterDist };
-            var content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+            var data2 = new SensorData2() { Ph=data.Ph, Relay1=data.Relay1.ToString(), Relay2=data.Relay2.ToString(), Tds1=data.Tds1, Tds2=data.Tds2, Temp1=data.Temp1,  Temp2=data.Temp2, Temp3=data.Temp3, WaterDist=data.WaterDist, TimeStamp=DateTime.Now };
+            var content = new StringContent(JsonConvert.SerializeObject(data2), Encoding.UTF8, "application/json");
             var res = await client.PostAsync(url, content, CancellationToken.None);
             if (res.IsSuccessStatusCode)
             {
@@ -188,5 +189,18 @@ namespace BMC.Hidroponic.Gateway
         public double WaterDist { get; set; }
         public bool Relay1 { get; set; }
         public bool Relay2 { get; set; }
+    }
+    public class SensorData2
+    {
+        public double Tds1 { get; set; }
+        public double Tds2 { get; set; }
+        public double Temp1 { get; set; }
+        public double Temp2 { get; set; }
+        public double Temp3 { get; set; }
+        public double Ph { get; set; }
+        public double WaterDist { get; set; }
+        public string Relay1 { get; set; }
+        public string Relay2 { get; set; }
+        public DateTime TimeStamp { get; set; }
     }
 }
