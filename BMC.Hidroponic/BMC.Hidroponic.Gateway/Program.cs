@@ -42,7 +42,11 @@ namespace BMC.Hidroponic.Gateway
             var url = ConfigurationManager.AppSettings["PowerBiUrl"];
             //SensorData2 data2 = new SensorData2() { Ph = data.Ph, Tds1 = data.Tds1, Tds2 = data.Tds2, Temp1 = data.Temp1, Temp2 = data.Temp2, Temp3 = data.Temp3, WaterDist = data.WaterDist };
             var data2 = new SensorData2() { Ph=data.Ph, Relay1=data.Relay1.ToString(), Relay2=data.Relay2.ToString(), Tds1=data.Tds1, Tds2=data.Tds2, Temp1=data.Temp1,  Temp2=data.Temp2, Temp3=data.Temp3, WaterDist=data.WaterDist, TimeStamp=DateTime.Now };
-            var content = new StringContent(JsonConvert.SerializeObject(data2), Encoding.UTF8, "application/json");
+          
+            var jsonSettings = new JsonSerializerSettings();
+            jsonSettings.DateFormatString = "yyyy-MM-ddThh:mm:ss.fffZ";
+            Console.WriteLine(JsonConvert.SerializeObject(data2, jsonSettings));
+            var content = new StringContent(JsonConvert.SerializeObject(data2, jsonSettings), Encoding.UTF8, "application/json");
             var res = await client.PostAsync(url, content, CancellationToken.None);
             if (res.IsSuccessStatusCode)
             {
