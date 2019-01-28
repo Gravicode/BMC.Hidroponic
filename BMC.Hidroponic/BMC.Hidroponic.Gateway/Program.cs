@@ -6,10 +6,13 @@ using System.Configuration;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using uPLibrary.Networking.M2Mqtt;
+using uPLibrary.Networking.M2Mqtt.Messages;
 
 namespace BMC.Hidroponic.Gateway
 {
@@ -29,10 +32,56 @@ namespace BMC.Hidroponic.Gateway
             }
 
         }
+        static MqttClient MqttClient;
+        const string DataTopic = "bmc/hidroponic/data";
+        const string ControlTopic = "bmc/hidroponic/control";
+        public static void PublishMessage(string Message)
+        {
+            MqttClient.Publish(DataTopic, Encoding.UTF8.GetBytes(Message), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, false);
+        }
+        static void SetupMqtt()
+        {
+            string IPBrokerAddress = ConfigurationManager.AppSettings["MqttHost"];
+            string ClientUser = ConfigurationManager.AppSettings["MqttUser"];
+            string ClientPass = ConfigurationManager.AppSettings["MqttPass"];
+
+            MqttClient = new MqttClient(IPAddress.Parse(IPBrokerAddress));
+
+            // register a callback-function (we have to implement, see below) which is called by the library when a message was received
+            MqttClient.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
+
+            // use a unique id as client id, each time we start the application
+            var clientId = "bmc-gateway";//Guid.NewGuid().ToString();
+
+            MqttClient.Connect(clientId, ClientUser,ClientPass);
+            Console.WriteLine("MQTT is connected");
+        } // this code runs when a message was received
+        static void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
+        {
+            string ReceivedMessage = Encoding.UTF8.GetString(e.Message);
+            if (e.Topic == ControlTopic)
+            {
+                var datastr = ReceivedMessage.Split(':');
+                switch (datastr[0])
+                {
+                    case "Relay1":
+                        var state1 = Convert.ToBoolean(datastr[1]);
+                        xBee.WriteLine($"Relay1|{state1.ToString()}");
+                        break;
+                    case "Relay2":
+                        var state2 = Convert.ToBoolean(datastr[1]);
+                        xBee.WriteLine($"Relay2|{state2.ToString()}");
+                        break;
+                }
+              
+            }
+        }
         static void Main(string[] args)
         {
             Console.WriteLine("gateway service is starting up...");
+            SetupMqtt();
             Setup();
+            
             StartListener();
             Console.ReadLine();
             xBee.Close();
@@ -71,7 +120,7 @@ namespace BMC.Hidroponic.Gateway
                     }
                     var ConStr = ConfigurationManager.AppSettings["DeviceConStr"];
                     // Connect to the IoT hub using the MQTT protocol
-                    s_deviceClient = DeviceClient.CreateFromConnectionString(ConStr, TransportType.Mqtt);
+                    s_deviceClient = DeviceClient.CreateFromConnectionString(ConStr, Microsoft.Azure.Devices.Client.TransportType.Mqtt);
                     s_deviceClient.SetMethodHandlerAsync("DoAction", DoAction, null).Wait();
                     //SendDeviceToCloudMessagesAsync();
 
@@ -149,7 +198,9 @@ namespace BMC.Hidroponic.Gateway
                     Console.WriteLine(jsonStr);
                     var node = JsonConvert.DeserializeObject<SensorData>(jsonStr);
                     SendDeviceToCloudMessagesAsync(node);
+                    PublishMessage(jsonStr);
                     SendToPowerBI(node);
+                    
                 };
               
              

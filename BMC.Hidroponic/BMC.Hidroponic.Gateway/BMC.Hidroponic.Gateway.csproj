@@ -51,6 +51,9 @@
     <Reference Include="DotNetty.Transport, Version=0.6.0.0, Culture=neutral, PublicKeyToken=bc13ca065fa06c29, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetty.Transport.0.6.0\lib\net45\DotNetty.Transport.dll</HintPath>
     </Reference>
+    <Reference Include="M2Mqtt.Net, Version=4.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\M2Mqtt.4.3.0.0\lib\net45\M2Mqtt.Net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Azure.Amqp, Version=2.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Azure.Amqp.2.3.2\lib\net45\Microsoft.Azure.Amqp.dll</HintPath>
     </Reference>
