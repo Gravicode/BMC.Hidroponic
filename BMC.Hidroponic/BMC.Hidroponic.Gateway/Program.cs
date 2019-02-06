@@ -4,7 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.IO.Ports;
+using Comfile.ComfilePi;
+//using System.IO.Ports;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -18,7 +19,7 @@ namespace BMC.Hidroponic.Gateway
 {
     class Program
     {
-        static SerialPort xBee;
+        static LinuxSerialPort xBee;
         private static DeviceClient s_deviceClient;
         static bool IsConnected = false;
         private static HttpClient _client;
@@ -182,33 +183,63 @@ namespace BMC.Hidroponic.Gateway
                 return new MethodResponse(Encoding.UTF8.GetBytes(result), 400);
             }
         }
+        static string TempData = "";
         static void StartListener()
         {
             var port = ConfigurationManager.AppSettings["XBeePort"];
-            xBee = new SerialPort(port, 9600);
+           
+            xBee = new LinuxSerialPort(port, 9600,System.IO.Ports.Parity.None,8,System.IO.Ports.StopBits.One);
             try
             {
-                if (xBee.IsOpen) xBee.Close();
+                if (xBee.IsOpen)
+                    xBee.Close();
                 xBee.Open();
                 Console.WriteLine("XBEE is ready...");
-                xBee.DataReceived += (object sender, SerialDataReceivedEventArgs e)
+                xBee.DataReceived += (object sender, System.IO.Ports.SerialDataReceivedEventArgs e)
                 =>
                 {
-                    var jsonStr = xBee.ReadLine();
-                    Console.WriteLine(jsonStr);
-                    var node = JsonConvert.DeserializeObject<SensorData>(jsonStr);
-                    SendDeviceToCloudMessagesAsync(node);
-                    PublishMessage(jsonStr);
-                    SendToPowerBI(node);
+                   
+                    try
+                    {
+                        var jsonStr = xBee.ReadLine();//TempData;
+                        Console.WriteLine(jsonStr);
+                        var node = JsonConvert.DeserializeObject<SensorData>(jsonStr);
+                        
+                        if (node != null)
+                        {
+                            //SendDeviceToCloudMessagesAsync(node);
+                            PublishMessage(jsonStr);
+                            //SendToPowerBI(node);
+                        }
+                        else
+                        {
+                            Console.WriteLine("serialize to json failed");
+                        }
+                       
+                    }catch(Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
+                 
                     
                 };
               
              
             }
-            catch (IOException ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }
+        }
+
+        public static string ToStr(byte[] bytes)
+        {
+            string hexString = "";
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                hexString += bytes[i].ToString("X2");
+            }
+            return hexString;
         }
 
         static async void SendDeviceToCloudMessagesAsync(SensorData data)
