@@ -39,6 +39,46 @@ namespace BMC.Hidroponic.Device
                 for (int i = 0; i < 10; i++)       //Get 10 sample value from the sensor for smooth the value
                 {
                     buf[i] = phSensor.ReadRaw();
+                    Thread.Sleep(100);
+                }
+                for (int i = 0; i < 9; i++)        //sort the analog from small to large
+                {
+                    for (int j = i + 1; j < 10; j++)
+                    {
+                        if (buf[i] > buf[j])
+                        {
+                            temp = buf[i];
+                            buf[i] = buf[j];
+                            buf[j] = temp;
+                        }
+                    }
+                }
+                avgValue = 0;
+                for (int i = 2; i < 8; i++)                      //take the average value of 6 center sample
+                    avgValue += buf[i];
+                double phValue = avgValue * 5.0 / 1024 / 6; //convert the analog into millivolt
+                phValue = 3.5 * phValue;                      //convert the millivolt into pH value
+                PhValue = phValue;
+                Debug.Print("    pH:");
+                Debug.Print(phValue.ToString());
+                Debug.Print(" ");
+
+                Thread.Sleep(800);
+                
+            }
+        }
+
+        public void Dispose()
+        {
+            th1.Abort();
+        }
+    }
+}
+
+/*
+   for (int i = 0; i < 10; i++)       //Get 10 sample value from the sensor for smooth the value
+                {
+                    buf[i] = phSensor.ReadRaw();
                   
                     Thread.Sleep(100);
                 }
@@ -65,12 +105,4 @@ namespace BMC.Hidroponic.Device
                 //digitalWrite(13, HIGH);
                 Thread.Sleep(2000);
                 //digitalWrite(13, LOW); 
-            }
-        }
-
-        public void Dispose()
-        {
-            th1.Abort();
-        }
-    }
-}
+*/

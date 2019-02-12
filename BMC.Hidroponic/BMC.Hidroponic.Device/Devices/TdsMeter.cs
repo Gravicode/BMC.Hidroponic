@@ -8,7 +8,7 @@ namespace BMC.Hidroponic.Device
     public class TdsMeter:IDisposable
     {
         public double tdsValue { get; set; }
-        const double VREF = 5.0;      // analog reference voltage(Volt) of the ADC
+        const double VREF = 3.3;//5.0;      // analog reference voltage(Volt) of the ADC
         const int SCOUNT = 30;           // sum of sample point
         double[] analogBuffer;    // store the analog value in the array, read from ADC
         double[] analogBufferTemp;
@@ -53,12 +53,12 @@ namespace BMC.Hidroponic.Device
                     double compensationCoefficient = 1.0 + 0.02 * (temperature - 25.0);    //temperature compensation formula: fFinalResult(25^C) = fFinalResult(current)/(1.0+0.02*(fTP-25.0));
                     double compensationVolatge = averageVoltage / compensationCoefficient;  //temperature compensation
                     tdsValue = (133.42 * compensationVolatge * compensationVolatge * compensationVolatge - 255.86 * compensationVolatge * compensationVolatge + 857.39 * compensationVolatge) * 0.5; //convert voltage value to tds value
-                    //Serial.print("voltage:");
-                    //Serial.print(averageVoltage,2);
-                    //Serial.print("V   ");
-                    //Serial.print("TDS Value:");
-                    //Serial.print(tdsValue,0);
-                    //Serial.println("ppm");
+                    Debug.Print("voltage:");
+                    Debug.Print(averageVoltage.ToString());
+                    Debug.Print("V   ");
+                    Debug.Print("TDS Value:");
+                    Debug.Print(tdsValue.ToString());
+                    Debug.Print("ppm");
                 }
                 //Thread.Sleep(20);
             }
