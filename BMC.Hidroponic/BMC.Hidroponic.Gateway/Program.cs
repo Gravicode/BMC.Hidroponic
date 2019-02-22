@@ -19,7 +19,7 @@ namespace BMC.Hidroponic.Gateway
 {
     class Program
     {
-        static LinuxSerialPort xBee;
+        static LinuxSerialPort xBee;//LinuxSerialPort
         private static DeviceClient s_deviceClient;
         static bool IsConnected = false;
         private static HttpClient _client;
@@ -187,7 +187,7 @@ namespace BMC.Hidroponic.Gateway
         static void StartListener()
         {
             var port = ConfigurationManager.AppSettings["XBeePort"];
-           
+            //LinuxSerialPort
             xBee = new LinuxSerialPort(port, 9600,System.IO.Ports.Parity.None,8,System.IO.Ports.StopBits.One);
             try
             {
@@ -209,7 +209,7 @@ namespace BMC.Hidroponic.Gateway
                         {
                             //SendDeviceToCloudMessagesAsync(node);
                             PublishMessage(jsonStr);
-                            //SendToPowerBI(node);
+                            SendToPowerBI(node);
                         }
                         else
                         {
