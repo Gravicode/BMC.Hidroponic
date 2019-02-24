@@ -81,7 +81,7 @@ namespace BMC.Hidroponic.Gateway
         {
             Console.WriteLine("gateway service is starting up...");
             SetupMqtt();
-            Setup();
+            //Setup();
             
             StartListener();
             Console.ReadLine();
@@ -209,7 +209,7 @@ namespace BMC.Hidroponic.Gateway
                         {
                             //SendDeviceToCloudMessagesAsync(node);
                             PublishMessage(jsonStr);
-                            //SendToPowerBI(node);
+                            SendToPowerBI(node);
                         }
                         else
                         {
