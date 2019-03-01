@@ -17,6 +17,7 @@ using Microsoft.SPOT.Hardware;
 using System.Text;
 using System.IO.Ports;
 using Gadgeteer.Modules.GHIElectronics;
+using GHI.Processor;
 
 namespace BMC.Hidroponic.Device
 {
@@ -63,28 +64,61 @@ namespace BMC.Hidroponic.Device
             GT.Timer timer = new GT.Timer(5000); // every second (1000ms)
             timer.Tick += timer_Tick;
             timer.Start();
-        }
 
+            // Timeout 10 seconds
+            int timeout = 1000 * 10;
+
+            // Enable Watchdog
+            GHI.Processor.Watchdog.Enable(timeout);
+
+            // Start a time counter reset thread
+            WDTCounterReset = new Thread(WDTCounterResetLoop);
+            WDTCounterReset.Start();
+            // Normally, you can read this flag ***ONLY ONCE*** on power up
+            if (GHI.Processor.Watchdog.LastResetCause == GHI.Processor.Watchdog.ResetCause.Watchdog)
+            {
+                Debug.Print("Watchdog did Reset");
+            }
+            else
+            {
+                Debug.Print("Reset switch or system power");
+            }
+        }
+        static Thread WDTCounterReset;
+        static void WDTCounterResetLoop()
+        {
+            while (true)
+            {
+                // reset time counter every 4 seconds
+                Thread.Sleep(4000);
+
+                GHI.Processor.Watchdog.ResetCounter();
+            }
+        }
         void Port_LineReceived(GT.SocketInterfaces.Serial sender, string line)
         {
-            Debug.Print(line);
-            string[] data = line.Split('|');
-            switch (data[0])
+            try
             {
-                case
-                "Relay1":
-                    {
-                        var state = data[1].ToLower() == "true" ? true : false;
-                        relay1.Write(state);
-                    }
-                    break;
-                case "Relay2":
-                    {
-                        var state = data[1].ToLower() == "true" ? true : false;
-                        relay2.Write(state);
-                    }
-                    break;
+                Debug.Print(line);
+                string[] data = line.Split('|');
+                switch (data[0])
+                {
+                    case
+                    "Relay1":
+                        {
+                            var state = data[1].ToLower() == "true" ? true : false;
+                            relay1.Write(state);
+                        }
+                        break;
+                    case "Relay2":
+                        {
+                            var state = data[1].ToLower() == "true" ? true : false;
+                            relay2.Write(state);
+                        }
+                        break;
+                }
             }
+            catch (Exception ex) { Debug.Print(ex.ToString()); }
         }
 
       
@@ -98,7 +132,8 @@ namespace BMC.Hidroponic.Device
                 {
                     WaterDist = DistanceSensor.TicksToInches(ticks);
                     //Debug.Print("Distance :" + WaterDist + "inch");
-                } Thread.Sleep(100);
+                }
+                Thread.Sleep(100);
             }
         }
 
