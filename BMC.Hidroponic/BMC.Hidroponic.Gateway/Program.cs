@@ -89,6 +89,7 @@ namespace BMC.Hidroponic.Gateway
         }
         static async void SendToPowerBI(SensorData data)
         {
+            //"https://api.powerbi.com/beta/e4a5cd36-e58f-4f98-8a1a-7a8e545fc65a/datasets/fdd35f45-854c-48b1-847b-1d0db62076cf/rows?key=C%2FnPcyGr4xDAHDmhgtX1AHEPtrU225NnQExPv%2FBOvPQowBDXQ674MFahutRyCpo0LZmo3BZerFvQE6M8UJ46XA%3D%3D"
             var url = ConfigurationManager.AppSettings["PowerBiUrl"];
             //SensorData2 data2 = new SensorData2() { Ph = data.Ph, Tds1 = data.Tds1, Tds2 = data.Tds2, Temp1 = data.Temp1, Temp2 = data.Temp2, Temp3 = data.Temp3, WaterDist = data.WaterDist };
             var data2 = new SensorData2() { Ph=data.Ph, Relay1=data.Relay1.ToString(), Relay2=data.Relay2.ToString(), Tds1=data.Tds1, Tds2=data.Tds2, Temp1=data.Temp1,  Temp2=data.Temp2, Temp3=data.Temp3, WaterDist=data.WaterDist, TimeStamp=DateTime.Now };
