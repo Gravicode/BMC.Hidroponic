@@ -50,7 +50,7 @@ namespace BMC.Hidroponic.Gateway
 
             // register a callback-function (we have to implement, see below) which is called by the library when a message was received
             MqttClient.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
-
+            MqttClient.Subscribe(new string[] { ControlTopic }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
             // use a unique id as client id, each time we start the application
             var clientId = "bmc-gateway";//Guid.NewGuid().ToString();
 
@@ -60,18 +60,19 @@ namespace BMC.Hidroponic.Gateway
         static void client_MqttMsgPublishReceived(object sender, MqttMsgPublishEventArgs e)
         {
             string ReceivedMessage = Encoding.UTF8.GetString(e.Message);
+            var msg = JsonConvert.DeserializeObject<DeviceAction>(ReceivedMessage);
             if (e.Topic == ControlTopic)
             {
-                var datastr = ReceivedMessage.Split(':');
-                switch (datastr[0])
+                //var datastr = ReceivedMessage.Split(':');
+                switch (msg.ActionName)
                 {
                     case "Relay1":
-                        var state1 = Convert.ToBoolean(datastr[1]);
+                        var state1 = Convert.ToBoolean(msg.Params[0]);
                         xBee.WriteLine($"Relay1|{state1.ToString()}");
                         break;
                     case "Relay2":
-                        var state2 = Convert.ToBoolean(datastr[1]);
-                        xBee.WriteLine($"Relay2|{state2.ToString()}");
+                        var state2 = Convert.ToBoolean(true);
+                        xBee.WriteLine($"Relay2|{msg.Params[0]}");
                         break;
                 }
               
