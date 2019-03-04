@@ -19,6 +19,7 @@ namespace BMC.Hidroponic.Device
             }
             catch(Exception ex) {
                 Debug.Print("fail to connect DS18B20 : " + ex.Message);
+
             }
         }
         public double TempValue { get; set; }

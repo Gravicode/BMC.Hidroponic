@@ -18,6 +18,9 @@ namespace BMC.Hidroponic.Device {
         /// <summary>The XBee Adapter module using socket 4 of the mainboard.</summary>
         private Gadgeteer.Modules.GHIElectronics.XBeeAdapter xBeeAdapter;
         
+        /// <summary>The USB Host module using socket 7 of the mainboard.</summary>
+        private Gadgeteer.Modules.GHIElectronics.USBHost usbHost;
+        
         /// <summary>This property provides access to the Mainboard API. This is normally not necessary for an end user program.</summary>
         protected new static GHIElectronics.Gadgeteer.FEZRaptor Mainboard {
             get {
@@ -41,6 +44,7 @@ namespace BMC.Hidroponic.Device {
         
         private void InitializeModules() {
             this.xBeeAdapter = new GTM.GHIElectronics.XBeeAdapter(4);
+            this.usbHost = new GTM.GHIElectronics.USBHost(7);
         }
     }
 }
