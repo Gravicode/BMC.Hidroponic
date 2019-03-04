@@ -1,4 +1,4 @@
-﻿using Microsoft.Azure.Devices.Client;
+﻿//using Microsoft.Azure.Devices.Client;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ namespace BMC.Hidroponic.Gateway
     class Program
     {
         static LinuxSerialPort xBee;//LinuxSerialPort
-        private static DeviceClient s_deviceClient;
+       // private static DeviceClient s_deviceClient;
         static bool IsConnected = false;
         private static HttpClient _client;
 
@@ -33,6 +33,7 @@ namespace BMC.Hidroponic.Gateway
             }
 
         }
+        
         static MqttClient MqttClient;
         const string DataTopic = "bmc/hidroponic/data";
         const string ControlTopic = "bmc/hidroponic/control";
@@ -109,7 +110,7 @@ namespace BMC.Hidroponic.Gateway
                 Console.WriteLine("Fail to send to Power BI");
             }
         }
-
+        /*
         static void Setup()
         {
             try
@@ -145,11 +146,7 @@ namespace BMC.Hidroponic.Gateway
             // Check the payload is a single integer value
             if (action != null)
             {
-                /*
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Telemetry interval set to {0} seconds", data);
-                Console.ResetColor();
-                */
+               
                 switch (action.ActionName)
                 {
                     case "PlaySound":
@@ -184,7 +181,7 @@ namespace BMC.Hidroponic.Gateway
                 string result = "{\"result\":\"Invalid parameter\"}";
                 return new MethodResponse(Encoding.UTF8.GetBytes(result), 400);
             }
-        }
+        }*/
         static string TempData = "";
         static void StartListener()
         {
@@ -243,7 +240,7 @@ namespace BMC.Hidroponic.Gateway
             }
             return hexString;
         }
-
+        /*
         static async void SendDeviceToCloudMessagesAsync(SensorData data)
         {
             var message = new Message(Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(data)));
@@ -258,7 +255,7 @@ namespace BMC.Hidroponic.Gateway
             await s_deviceClient.SendEventAsync(message);
             Console.WriteLine("{0} > Sending message: {1}", DateTime.Now, "ok");
 
-        }
+        }*/
 
     }
     public class DeviceAction
