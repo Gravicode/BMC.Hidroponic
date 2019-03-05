@@ -14,66 +14,77 @@ namespace BMC.Hidroponic.Device
         }
         public void WriteLogs(string Message)
         {
-            var MessageStr = DateTime.Now.ToString("dd-MMM-yyyy HH:mm:ss") + " => " + Message;
-            var PathStr = "\\USB\\Logs";
-            var LogName = "log_" + DateTime.Now.ToString("dd_MMM_yyyy") + ".txt";
-            if (usbHost.IsMassStorageConnected && usbHost.IsMassStorageMounted)
+            try
             {
-                if (IsFileExist(PathStr, LogName))
+                var MessageStr = DateTime.Now.ToString("dd-MMM-yyyy HH:mm:ss") + " => " + Message;
+                var PathStr = "\\USB\\Logs";
+                var LogName = "log_" + DateTime.Now.ToString("dd_MMM_yyyy") + ".txt";
+                if (usbHost.IsMassStorageConnected && usbHost.IsMassStorageMounted)
                 {
-                    /*
-                    using (MemoryStream ms = new MemoryStream())
+                    if (IsFileExist(PathStr, LogName))
                     {
-                        var ExistingData =usbHost.MassStorageDevice.ReadFile(PathStr + "\\" + LogName);
-                        ms.Write(ExistingData ,0, ExistingData.Length);
-                        var newText = "New Line!\r\n";
-                        ms.Write(Encoding.UTF8.GetBytes(newText), 0, newText.Length);
-                        usbHost.MassStorageDevice.WriteFile(PathStr + "\\" + LogName, ms.ToArray());
-                       
-                    }*/
-
-                    using (FileStream stream = new FileStream(PathStr + "\\" + LogName, FileMode.Append, FileAccess.Write, FileShare.ReadWrite))
-                    using (TextWriter writer = new StreamWriter(stream))
-                    {
-                        writer.WriteLine(MessageStr);
-                        writer.Flush();
-                        writer.Close();
-                    }
-
-                }
-                else
-                {
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        ms.Write(Encoding.UTF8.GetBytes(MessageStr + "\r\n"), 0, MessageStr.Length + 2);
-                        Debug.Print(usbHost.MassStorageDevice.RootDirectory);
-                        usbHost.MassStorageDevice.CreateDirectory(PathStr);
-                        usbHost.MassStorageDevice.WriteFile(PathStr + "\\" + LogName, ms.ToArray());
                         /*
-                        var files = usbHost.MassStorageDevice.ListFiles(PathStr);
-                        foreach (var item in files)
+                        using (MemoryStream ms = new MemoryStream())
                         {
-                            Debug.Print(item);
+                            var ExistingData =usbHost.MassStorageDevice.ReadFile(PathStr + "\\" + LogName);
+                            ms.Write(ExistingData ,0, ExistingData.Length);
+                            var newText = "New Line!\r\n";
+                            ms.Write(Encoding.UTF8.GetBytes(newText), 0, newText.Length);
+                            usbHost.MassStorageDevice.WriteFile(PathStr + "\\" + LogName, ms.ToArray());
+                       
                         }*/
+
+                        using (FileStream stream = new FileStream(PathStr + "\\" + LogName, FileMode.Append, FileAccess.Write, FileShare.ReadWrite))
+                        using (TextWriter writer = new StreamWriter(stream))
+                        {
+                            writer.WriteLine(MessageStr);
+                            writer.Flush();
+                            writer.Close();
+                        }
+
+                    }
+                    else
+                    {
+                        using (MemoryStream ms = new MemoryStream())
+                        {
+                            ms.Write(Encoding.UTF8.GetBytes(MessageStr + "\r\n"), 0, MessageStr.Length + 2);
+                            Debug.Print(usbHost.MassStorageDevice.RootDirectory);
+                            usbHost.MassStorageDevice.CreateDirectory(PathStr);
+                            usbHost.MassStorageDevice.WriteFile(PathStr + "\\" + LogName, ms.ToArray());
+                            /*
+                            var files = usbHost.MassStorageDevice.ListFiles(PathStr);
+                            foreach (var item in files)
+                            {
+                                Debug.Print(item);
+                            }*/
+                        }
                     }
                 }
             }
+            catch (Exception ex) { Debug.Print(ex.ToString()); }
         }
 
         bool IsFileExist(string Path, string FileName)
         {
-            if (usbHost.IsMassStorageConnected && usbHost.IsMassStorageMounted)
+            try
             {
-                var files = usbHost.MassStorageDevice.ListFiles(Path);
-                foreach (var item in files)
+                if (usbHost.IsMassStorageConnected && usbHost.IsMassStorageMounted)
                 {
-                    var fname = System.IO.Path.GetFileName(item);
-
-                    if (fname.ToLower() == FileName.ToLower())
+                    var files = usbHost.MassStorageDevice.ListFiles(Path);
+                    foreach (var item in files)
                     {
-                        return true;
+                        var fname = System.IO.Path.GetFileName(item);
+
+                        if (fname.ToLower() == FileName.ToLower())
+                        {
+                            return true;
+                        }
                     }
                 }
+            }
+            catch(Exception ex)
+            {
+                Debug.Print(ex.ToString());
             }
             return false;
         }
