@@ -1,4 +1,5 @@
 ﻿//using Microsoft.Azure.Devices.Client;
+
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -72,8 +73,8 @@ namespace BMC.Hidroponic.Gateway
                         xBee.WriteLine($"Relay1|{state1.ToString()}");
                         break;
                     case "Relay2":
-                        var state2 = Convert.ToBoolean(true);
-                        xBee.WriteLine($"Relay2|{msg.Params[0]}");
+                        var state2 = Convert.ToBoolean(msg.Params[0]);
+                        xBee.WriteLine($"Relay2|{state2.ToString()}");
                         break;
                 }
               

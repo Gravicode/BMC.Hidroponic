@@ -234,7 +234,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Comfile.ComfilePi\Comfile.ComfilePi.csproj">
+    <ProjectReference Include="..\xx\Comfile.ComfilePi\Comfile.ComfilePi.csproj">
       <Project>{70c8bb55-1f76-4ce0-9758-799fe2a595bf}</Project>
       <Name>Comfile.ComfilePi</Name>
     </ProjectReference>
