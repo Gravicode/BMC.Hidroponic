@@ -26,8 +26,8 @@ namespace BMC.Hidroponic.Device
         static double WaterDist = 0;
         HC_SR04 DistanceSensor = new HC_SR04(ThisBoard.Socket9.Pin5, ThisBoard.Socket9.Pin6);
         //SimpleSerial UART = null;
-        OutputPort relay1 = new OutputPort(ThisBoard.Socket9.Pin3, false);
-        OutputPort relay2 = new OutputPort(ThisBoard.Socket9.Pin4, false);
+        OutputPort relay1 = new OutputPort(ThisBoard.Socket9.Pin3, true);
+        OutputPort relay2 = new OutputPort(ThisBoard.Socket9.Pin4, true);
         PhMeter phSensor = new PhMeter(ThisBoard.Socket14.AnalogInput5);
         TdsMeter Tds1 = new TdsMeter(ThisBoard.Socket14.AnalogInput3);
         DS18B20GHI Temp1 = new DS18B20GHI(ThisBoard.Socket1.Pin4);
@@ -61,6 +61,7 @@ namespace BMC.Hidroponic.Device
 
             xBeeAdapter.Configure(9600,SerialParity.None,SerialStopBits.One,8,HardwareFlowControl.NotRequired);
             //StartLora();
+
             xBeeAdapter.Port.LineReceived += Port_LineReceived;
             GT.Timer timer = new GT.Timer(5000); // every second (1000ms)
             timer.Tick += timer_Tick;

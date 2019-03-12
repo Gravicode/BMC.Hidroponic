@@ -80,14 +80,5 @@
         <socketShapeMoniker Id="2c923d9f-ff86-43aa-b037-9d1bd7ebfe3c" />
       </nodes>
     </socketConnector>
-    <moduleShape Id="b2182ed7-dfe6-4abf-82f1-bb958debfa5b" absoluteBounds="6.28, 5.58, 1.2598425196850394, 0.86614173228346458">
-      <moduleMoniker Id="514bc0f6-3693-4e42-9daf-bf30c61264c1" />
-      <relativeChildShapes />
-      <nestedChildShapes>
-        <socketUseShape Id="a8fc37b5-0386-41f8-b58e-9fd0d845db2a" absoluteBounds="6.7200000000000006, 6.2, 0.25, 0.25">
-          <socketUseMoniker Id="b323a276-33a5-4b97-84c1-b9e484441ada" />
-        </socketUseShape>
-      </nestedChildShapes>
-    </moduleShape>
   </nestedChildShapes>
 </gadgeteerDSLDiagram>
