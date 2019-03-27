@@ -54,7 +54,7 @@ namespace BMC.Hidroponic.Gateway
             MqttClient.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
             MqttClient.Subscribe(new string[] { ControlTopic }, new byte[] { MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE });
             // use a unique id as client id, each time we start the application
-            var clientId = "bmc-gateway";//Guid.NewGuid().ToString();
+            var clientId = "bmc-hidroponic";//Guid.NewGuid().ToString();
 
             MqttClient.Connect(clientId, ClientUser,ClientPass);
             Console.WriteLine("MQTT is connected");
