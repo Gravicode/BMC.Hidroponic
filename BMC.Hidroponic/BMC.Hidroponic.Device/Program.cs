@@ -26,15 +26,15 @@ namespace BMC.Hidroponic.Device
         static double WaterDist = 0;
         HC_SR04 DistanceSensor = new HC_SR04(ThisBoard.Socket9.Pin5, ThisBoard.Socket9.Pin6);
         //SimpleSerial UART = null;
-        OutputPort relay1 = new OutputPort(ThisBoard.Socket9.Pin3, false);
-        OutputPort relay2 = new OutputPort(ThisBoard.Socket9.Pin4, false);
+        OutputPort relay1 = new OutputPort(ThisBoard.Socket9.Pin3, true);
+        OutputPort relay2 = new OutputPort(ThisBoard.Socket9.Pin4, true);
         PhMeter phSensor = new PhMeter(ThisBoard.Socket14.AnalogInput5);
         TdsMeter Tds1 = new TdsMeter(ThisBoard.Socket14.AnalogInput3);
         DS18B20GHI Temp1 = new DS18B20GHI(ThisBoard.Socket1.Pin4);
         DS18B20GHI Temp2 = new DS18B20GHI(ThisBoard.Socket1.Pin3);
         //DS18B20 Temp3 = new DS18B20(ThisBoard.Socket1.Pin5);
         TdsMeter Tds2 = new TdsMeter(ThisBoard.Socket14.AnalogInput4);
-        LogHelper logs;
+        //LogHelper logs;
         // This method is run when the mainboard is powered up or reset.   
         void ProgramStarted()
         {
@@ -54,13 +54,14 @@ namespace BMC.Hidroponic.Device
             Debug.Print("Program Started");
             Mainboard.LDR0.OnInterrupt += LDR0_OnInterrupt;
             Mainboard.LDR1.OnInterrupt += LDR1_OnInterrupt;
-            logs = new LogHelper(usbHost);
+            //logs = new LogHelper(usbHost);
            
             Thread thDist = new Thread(new ThreadStart(LoopDistance));
             thDist.Start();
 
             xBeeAdapter.Configure(9600,SerialParity.None,SerialStopBits.One,8,HardwareFlowControl.NotRequired);
             //StartLora();
+
             xBeeAdapter.Port.LineReceived += Port_LineReceived;
             GT.Timer timer = new GT.Timer(5000); // every second (1000ms)
             timer.Tick += timer_Tick;
@@ -78,12 +79,12 @@ namespace BMC.Hidroponic.Device
             // Normally, you can read this flag ***ONLY ONCE*** on power up
             if (GHI.Processor.Watchdog.LastResetCause == GHI.Processor.Watchdog.ResetCause.Watchdog)
             {
-                logs.WriteLogs("reset by watchdog");
+                //logs.WriteLogs("reset by watchdog");
                 Debug.Print("Watchdog did Reset");
             }
             else
             {
-                logs.WriteLogs("system reboot / start");
+                //logs.WriteLogs("system reboot / start");
                 Debug.Print("Reset switch or system power");
             }
         }
@@ -123,7 +124,7 @@ namespace BMC.Hidroponic.Device
             }
             catch (Exception ex) { 
                 Debug.Print(ex.ToString());
-                logs.WriteLogs("relay error :" + ex);
+                //logs.WriteLogs("relay error :" + ex);
             }
         }
 
