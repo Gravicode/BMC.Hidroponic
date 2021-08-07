@@ -1,13 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.168
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BMC.Hidroponic.Device", "BMC.Hidroponic.Device\BMC.Hidroponic.Device.csproj", "{D61AB78D-1847-4549-B867-9001B0E7CA06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BMC.Hidroponic.Gateway", "BMC.Hidroponic.Gateway\BMC.Hidroponic.Gateway.csproj", "{35341809-AD4B-4AD9-B805-AE24835F94CB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Comfile.ComfilePi", "xx\Comfile.ComfilePi\Comfile.ComfilePi.csproj", "{70C8BB55-1F76-4CE0-9758-799FE2A595BF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BMC.Hidroponic.Simulator", "BMC.Hidroponic.Simulator\BMC.Hidroponic.Simulator.csproj", "{79F6543F-3133-4994-82B8-303CE7323EF5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,14 +19,12 @@ Global
 		{D61AB78D-1847-4549-B867-9001B0E7CA06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D61AB78D-1847-4549-B867-9001B0E7CA06}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D61AB78D-1847-4549-B867-9001B0E7CA06}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{35341809-AD4B-4AD9-B805-AE24835F94CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{35341809-AD4B-4AD9-B805-AE24835F94CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{35341809-AD4B-4AD9-B805-AE24835F94CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{35341809-AD4B-4AD9-B805-AE24835F94CB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{70C8BB55-1F76-4CE0-9758-799FE2A595BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{70C8BB55-1F76-4CE0-9758-799FE2A595BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{70C8BB55-1F76-4CE0-9758-799FE2A595BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{70C8BB55-1F76-4CE0-9758-799FE2A595BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79F6543F-3133-4994-82B8-303CE7323EF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79F6543F-3133-4994-82B8-303CE7323EF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79F6543F-3133-4994-82B8-303CE7323EF5}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{79F6543F-3133-4994-82B8-303CE7323EF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79F6543F-3133-4994-82B8-303CE7323EF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79F6543F-3133-4994-82B8-303CE7323EF5}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
