@@ -46,7 +46,7 @@ namespace BMC.Hidroponic.Gateway
             string ClientUser = ConfigurationManager.AppSettings["MqttUser"];
             string ClientPass = ConfigurationManager.AppSettings["MqttPass"];
 
-            MqttClient = new MqttClient(IPAddress.Parse(IPBrokerAddress));
+            MqttClient = new MqttClient(IPBrokerAddress);
 
             // register a callback-function (we have to implement, see below) which is called by the library when a message was received
             MqttClient.MqttMsgPublishReceived += client_MqttMsgPublishReceived;
